@@ -7,12 +7,6 @@ import java.util.List;
 import java.util.Scanner;
 
 /**
- * COSC 2203-01 / Data Structures
- * Assignment 04 / "Weighted Graphs"
- * Brian Scott
- *
- * 25 July 2015
- *
  * This class handles input and output for the program. It prompts for the
  * input filename with a scanner. Alternatively, the filename may be passed to
  * the program as a command line argument. The file is then passed into a
@@ -27,13 +21,11 @@ import java.util.Scanner;
  * feasible, an exception will be thrown, caught, and handled within the
  * WeightedGraph class.
  */
-public class Driver {
+class Driver {
 
     // Program entry point
     public static void main(String[] args) throws IOException {
-        System.out.printf("This program analyses a project, represented as\n" +
-                "an activity-on-edge digraph, and reports various\n" +
-                "statistics about the project.\n\n");
+        System.out.printf("This program analyses a project, represented as an activity-on-edge digraph, and reports various statistics about the project.\n\n");
         Scanner sc = null;
         String file = "";
 
@@ -59,9 +51,7 @@ public class Driver {
             sc.nextInt();
             int adjStages = sc.nextInt();
 
-            for (int j=0;j<adjStages;j++) {
-                adjacencyMatrix[i][sc.nextInt() - 1] = sc.nextInt();
-            }
+            for (int j=0;j<adjStages;j++) adjacencyMatrix[i][sc.nextInt() - 1] = sc.nextInt();
         }
 
 
@@ -75,27 +65,19 @@ public class Driver {
             int[] est = wg.getEST();
             int[] eat = wg.getEAT();
             List<Integer> critical = new ArrayList<>();
-            fw.write(String.format("Project is feasible.\n" +
-                    "Topological ordering: %s\n\n" +
-                    "Stg.\tEarly\tLate\n", wg.getTopOrder()));
-            for (int k=0;k<est.length;k++) {
-                fw.write(String.format("%d\t%d\t%d\n",
-                        k+1,est[k], wg.getLST()[k]));
-            }
-            fw.write(String.format("Total project time: %d\n\n",
-                    est[est.length - 1]));
+            fw.write(String.format("Project is feasible.\nTopological ordering: %s\n\nStg.\tEarly\tLate\n", wg.getTopOrder()));
+            for (int k=0;k<est.length;k++) fw.write(String.format("%d\t%d\t%d\n", k+1,est[k], wg.getLST()[k]));
 
-            fw.write("Act.\tEarly\tLate\n");
+            fw.write(String.format("Total project time: %d\n\nAct.\tEarly\tLate\n", est[est.length - 1]));
+            fw.write("");
+
             for (int l=0;l<eat.length;l++) {
-                fw.write(String.format("%d\t%d\t%d\n", l + 1,
-                        eat[l], wg.getLAT()[l]));
+                fw.write(String.format("%d\t%d\t%d\n", l + 1, eat[l], wg.getLAT()[l]));
                 if (eat[l] == wg.getLAT()[l]) critical.add(l+1);
             }
-            fw.write(String.format("\nCritical activities: %s",
-                    critical.toString()));
+            fw.write(String.format("\nCritical activities: %s", critical.toString()));
         }
         fw.close();
-        System.out.printf("\nFinished. Report written to: %s\n",
-                file + ".rpt.txt");
+        System.out.printf("\nFinished. Report written to: %s\n", file + ".rpt.txt");
     }
 }

@@ -5,12 +5,6 @@ import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
 /**
- * COSC 2203-01 / Data Structures
- * Assignment 04 / "Weighted Graphs"
- * Brian Scott
- *
- * 25 July 2015
- *
  * This class describes a weighted directed graph represented by an adjacency
  * matrix. Most of the work to build the graph is done in the constructor; it
  * uses recursive methods to get the early and late stage times.
@@ -23,14 +17,14 @@ import java.util.stream.IntStream;
  * it will print out a message saying so. The constructor also prints out its
  * current status to the console as it calculates the times of the project.
  */
-public class WeightedGraph {
+class WeightedGraph {
     private final int[] est;
     private final int[] lst;
     private final int[] eat;
     private final int[] lat;
     private final int[][] adjMat;
-    private List<Integer> topOrder;
-    private boolean feasible = false;
+    private final List<Integer> topOrder;
+    private boolean feasible;
 
     // Constructor, builds the graph
     WeightedGraph(int[][] matrix) {
@@ -113,9 +107,7 @@ public class WeightedGraph {
         for (int i=1;i<=len;i++) if (adjMat[i-1][stage-1] > 0) incoming.add(i);
 
         if (incoming.size() == 0) return 0;
-        cost.addAll(incoming.parallelStream().map(s ->
-                adjMat[s - 1][stage - 1] + EST(s))
-                .collect(Collectors.toList()));
+        cost.addAll(incoming.parallelStream().map(s -> adjMat[s - 1][stage - 1] + EST(s)).collect(Collectors.toList()));
 
         return cost.parallelStream().mapToInt(i -> i).max().getAsInt();
     }
@@ -128,9 +120,7 @@ public class WeightedGraph {
         for (int i=1;i<=len;i++) if (adjMat[stage-1][i-1] > 0) outgoing.add(i);
 
         if (outgoing.size() == 0) return EST(stage);
-        cost.addAll(outgoing.parallelStream().map(s ->
-                LST(s) - adjMat[stage - 1][s - 1])
-                .collect(Collectors.toList()));
+        cost.addAll(outgoing.parallelStream().map(s -> LST(s) - adjMat[stage - 1][s - 1]).collect(Collectors.toList()));
 
         return cost.parallelStream().mapToInt(i -> i).min().getAsInt();
     }
@@ -156,7 +146,7 @@ public class WeightedGraph {
     // Very simple stack implementation
     private class CStack<E> {
         private int size;
-        private LinkedList<E> stackList;
+        private final LinkedList<E> stackList;
 
         // Constructor, initialises stackList and size
         CStack() {
@@ -174,11 +164,6 @@ public class WeightedGraph {
         public E pop() {
             size--;
             return stackList.removeFirst();
-        }
-
-        // Look at top of stack
-        public E peek() {
-            return stackList.getFirst();
         }
 
         // Return size of stack
