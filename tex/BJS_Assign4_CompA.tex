@@ -1,0 +1,93 @@
+\input{preamble.tex}
+\begin{document}
+\newcolumntype{C}{>{\centering\arraybackslash}p{1em}}
+	
+	\input{4/tpage.tex}
+	\section{Problem Description}
+	This program analyzes a project, represented as an activity-on-edge digraph, and reports various statistics describing the project. The program makes use of a weighted graph to represent the inter-dependencies among the activities in the given project.
+	
+	\section{Input / Output Analysis}
+	\subsection{Input}
+	The input will be in the form of a text file, the project description, which will be fed through standard input. The first line of the input is equal to the number of stages in the project; each successive line contains the stage number, the number of adjacent stages, and a set of pairs. The pairs describe an adjacent stage number and it's activity cost, respectively.
+	
+	\begin{lstlisting}[caption=Sample input]
+		5
+		1 2 2 6 3 9
+		2 1 4 2
+		3 3 2 3 4 6 5 8
+		4 1 5 1
+		5 0
+	\end{lstlisting}
+	\subsection{Output}
+	The output of the program is a text file containing the following information describing the project:
+	\begin{itemize}
+		\item Whether or not the project is feasible
+		\item A linear ordering of the project activities (topological order)
+		\item The early and late times of each stage in the project
+		\item The total time required to complete the project
+		\item The early and late times of each activity in the project
+		\item A listing of the project's critical activities
+	\end{itemize}
+	The output filename will be in the format ``\texttt{\emph{<input\_filename>}.rpt.txt}''.
+	\newpage
+	\begin{lstlisting}[caption=Sample output]
+		Project is feasible
+		
+		Ordering: 1 3 2 4 5
+		
+		Stg. Early Late
+		1 	  		0 			0
+		2 	  		12 		14
+		3 	  		9 			9
+		4 	  		15 		16
+		5 	  		17 		17
+		
+		Total Project Time: 17
+		
+		Act.	 Early	 Late
+		1 		   0 	 		8
+		2 		   0 	 		0
+		3 		   12 	 	14
+		4 		   9 	 		11
+		5 	 	   9 	 		10
+		6 		   9 	 		9
+		7 		   15 	 	16
+		
+		Critical Activities: 2, 6
+	\end{lstlisting}
+	\newpage
+	
+	\section{Program Design}
+	\subsection{Class Diagram}
+	\begin{center}
+		\includegraphics[scale=0.80]{4/cd.pdf}
+	\end{center}
+	\newpage
+	\thispagestyle{empty}
+	\begin{landscape}
+		\includepdf[pages={1},scale=1.23,pagecommand=\subsection{Design Chart}]{4/deschart.pdf}
+	\end{landscape}
+
+
+	\section{Data Structure Graphics}
+	\subsection{Weighted Directed Graph:}
+	\begin{center}
+		\includegraphics[scale=0.2]{gfx/weighted_graph.png}
+	\end{center}
+	\subsection{Adjacency Matrix:}
+	\begin{center}
+		\emph{Correlates to the above graph} \\[5mm]
+		$\begin{pmatrix}
+			  & A & B & C & D & E\\
+			A & - & 0 & 12 & 60 & 0\\
+			B & 10 & - & 0 & 0 & 0\\
+			C & 0 & 20 & - & 32 & 0\\
+			D & 0 & 0 & 0 & - & 0\\
+			E & 7 & 0 & 0 & 0 & -\\
+		\end{pmatrix}$
+	\end{center}
+	\subsection{Stack:}
+	\begin{center}
+		\includegraphics[scale=0.3]{gfx/stack-int.png}
+	\end{center}
+\end{document}
