@@ -1,0 +1,55 @@
+\documentclass[12pt]{article}
+\usepackage{fancyhdr,nameref}
+\usepackage[a4paper,margin=1cm,top=1in,footskip=0.5cm]{geometry}
+\usepackage{enumitem}
+\usepackage{listings}
+\usepackage{courier,caption,soul}
+\usepackage{amsmath,amsfonts,fixmath}
+\usepackage{tabu,array,graphicx}
+\usepackage[nodayofweek]{datetime}
+\usepackage[usenames,dvipsnames]{xcolor}
+\usepackage{pgfplots}
+\usepackage{circuitikz,siunitx}
+\usepackage{titlesec}
+\usepackage{tabto}
+\usepackage[absolute]{textpos}
+\usepackage{pdflscape}
+\usepackage{pdfpages}
+\usepackage{makecell}
+\usepackage{multirow}
+\pgfplotsset{compat=1.12}
+\everymath{\displaystyle}
+\setlength\extrarowheight{4pt}
+\newdateformat{datef}{\twodigit{\THEDAY}{ }\shortmonthname[\THEMONTH]{ }\THEYEAR}
+\newdate{date}{17}{07}{2015} % parameters are DDMMMYYYY format; output is DD MMM YYYY format
+\pagestyle{fancy}
+\fancyhf{}
+\fancyhf[FC]{\thepage}
+\fancyhf[HL]{\slshape COSC 2203-01}
+\fancyhf[HC]{\scshape Component A}
+\fancyhf[HR]{\slshape \leftmark}
+\newcommand{\hlc}[2][yellow]{ {\sethlcolor{#1} \hl{#2}} }
+\newcommand{\hlbox}[1]{\colorbox{cyan!50}{#1}}
+\newcommand{\qw}[1]{\si{.#1}}
+%\titleformat*{\section}{\LARGE\bfseries\ttfamily}
+\definecolor{dkgreen}{RGB}{0,102,0}
+\definecolor{gray}{rgb}{0.5,0.5,0.5}
+\definecolor{mauve}{rgb}{0.58,0,0.82}
+\lstset{frame=tb,
+	escapeinside={\%*}{*)},
+	captionpos=t,
+	language=Java,
+	aboveskip=3mm,
+	belowskip=3mm,
+	showstringspaces=false,
+	columns=flexible,
+	basicstyle={\small\ttfamily},
+	numbers=none,
+	numbersep=0pt,
+	numberstyle=\small\ttfamily\color{gray},
+	keywordstyle=\color{blue},
+	commentstyle=\color{dkgreen},
+	stringstyle=\color{mauve},
+	breaklines=true,
+	breakatwhitespace=true,
+	tabsize=3}
