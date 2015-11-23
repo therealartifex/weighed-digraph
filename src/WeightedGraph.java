@@ -45,25 +45,20 @@ class WeightedGraph {
 
         // Determine topological ordering
         for (int l=0;l<len;l++) {
-            for (int i = 1; i <= len; i++)
-                if (predCount[i - 1] == 0 & !topOrder.contains(i))
-                    tempStack.push(i);
+            for (int i=1;i<=len;i++) if (predCount[i-1] == 0 & !topOrder.contains(i)) tempStack.push(i);
 
             while (tempStack.size() > 0) {
                 int currentStage = tempStack.pop();
-                int[] edges = adjMat[currentStage - 1];
+                int[] edges = adjMat[currentStage-1];
                 topOrder.add(currentStage);
 
-                for (int i = 0; i < edges.length; i++) {
-                    if (edges[i] > 0 & predCount[i] > 0) predCount[i]--;
-                }
+                for (int i=0;i<edges.length;i++) if (edges[i] > 0 & predCount[i] > 0) predCount[i]--;
             }
         }
 
         try {
-            if (topOrder.size() < len) {
-                throw new IllegalArgumentException("Project is infeasible.\n");
-            } else {
+            if (topOrder.size() < len) throw new IllegalArgumentException("Project is infeasible.\n");
+            else {
                 System.out.printf("Project is feasible.\n");
                 feasible = true;
             }
@@ -74,9 +69,9 @@ class WeightedGraph {
 
         // Determine early/late stage times
         System.out.printf("Determining early stage times...\n");
-        for (int i=0;i<len;i++) est[i] = EST(i + 1);
+        for (int i=0;i<len;i++) est[i] = EST(i+1);
         System.out.printf("Determining late stage times...\n");
-        for (int j=len-1;j>=0;j--) lst[j] = LST(j + 1);
+        for (int j=len-1;j>=0;j--) lst[j] = LST(j+1);
 
         // Determine early/late activity times
         List<Integer> outgoing = new ArrayList<>();
@@ -94,20 +89,20 @@ class WeightedGraph {
 
         System.out.printf("Determining early/late activity times...\n");
         for (int k=0;k<outgoing.size();k++) {
-            eat[k] = EST(outgoing.get(k));
+            eat[k] = est[outgoing.get(k)-1];
             lat[k] = LST(incoming.get(k)) - costs.get(k);
         }
     }
 
     // This uses recursion to get the early stage time for an arbitrary stage
-    private int EST(int stage){
+    private int EST(int stage) {
         int len = adjMat[0].length;
         List<Integer> cost = new ArrayList<>();
         List<Integer> incoming = new ArrayList<>();
         for (int i=1;i<=len;i++) if (adjMat[i-1][stage-1] > 0) incoming.add(i);
 
         if (incoming.size() == 0) return 0;
-        cost.addAll(incoming.parallelStream().map(s -> adjMat[s - 1][stage - 1] + EST(s)).collect(Collectors.toList()));
+        cost.addAll(incoming.parallelStream().map(s -> adjMat[s-1][stage-1] + EST(s)).collect(Collectors.toList()));
 
         return cost.parallelStream().mapToInt(i -> i).max().getAsInt();
     }
@@ -120,7 +115,7 @@ class WeightedGraph {
         for (int i=1;i<=len;i++) if (adjMat[stage-1][i-1] > 0) outgoing.add(i);
 
         if (outgoing.size() == 0) return EST(stage);
-        cost.addAll(outgoing.parallelStream().map(s -> LST(s) - adjMat[stage - 1][s - 1]).collect(Collectors.toList()));
+        cost.addAll(outgoing.parallelStream().map(s -> LST(s) - adjMat[stage-1][s-1]).collect(Collectors.toList()));
 
         return cost.parallelStream().mapToInt(i -> i).min().getAsInt();
     }

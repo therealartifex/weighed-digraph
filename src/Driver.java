@@ -54,8 +54,11 @@ class Driver {
             for (int j=0;j<adjStages;j++) adjacencyMatrix[i][sc.nextInt() - 1] = sc.nextInt();
         }
 
-
+        double startTime = System.nanoTime();
         WeightedGraph wg = new WeightedGraph(adjacencyMatrix);
+        double estimatedTime = (System.nanoTime() - startTime) / 1000000000;
+        System.out.printf("\nBuilt in %f sec\n\n", estimatedTime);
+
         FileWriter fw = new FileWriter(file + ".rpt.txt", false);
         if (!wg.isFeasible()) {
             fw.write("Project is infeasible.");
